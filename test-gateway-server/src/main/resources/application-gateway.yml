@@ -1,0 +1,32 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: gateway-client1 #id是唯一的
+        #uri: lb://gateway-client #被代理的服务的uri
+        uri: http://localhost:10001
+        predicates:
+        - Path=/api/client/**
+        - Weight=service,1
+        #- Cookie=test,123456
+        #- Method= POST
+        #- Header=test,(.*?)
+        filters:
+        - StripPrefix=2
+      #        - id: gateway-client2 #id是唯一的
+      #          #uri: lb://gateway-client #被代理的服务的uri
+      #          uri: lb://gateway-client2
+      #          predicates:
+      #          - Path=/api/client/**
+      #          - Weight=service,9
+      #          #- Cookie=test,123456
+      #          #- Method= POST
+      #          #- Header=test,(.*?)
+      #          filters:
+      #          - StripPrefix=2
+      - id: gateway-client2
+        uri: http://localhost:10002
+        predicates:
+        - Path=/auth/client/**
+        filters:
+        - StripPrefix=2
